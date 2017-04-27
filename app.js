@@ -3,8 +3,6 @@
 const path = require('path');
 
 //npm modules
-// npm i --save express morgan
-// (from other parts)
 const express = require('express');
 const morgan = require('morgan');
 
