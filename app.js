@@ -26,29 +26,31 @@ app.get('/', function(req, res) {
 })
 
 
-server.lastPlayderID = 0; // Keep track of the last id assigned to a new player
+server.lastPlayerID = 0; // Keep track of the last id assigned to a new player
 
 io.on('connection', function(socket) {
   socket.on('newplayer', function() {
     socket.player = {
-      id: server.lastPlayderID++,
+      id: server.lastPlayerID++,
       x: randomInt(100, 400),
       y: randomInt(100, 400)
     };
-    socket.emit('allplayers', getAllPlayers());
+    socket.emit('allplayers', getAllPlayers(socket.id));
     socket.broadcast.emit('newplayer', socket.player);
   });
 
-  socket.on('disconnect',function(){
-      // io.emit('remove',socket.player.id);
+  socket.on('disconnect', function() {
+    io.emit('remove',socket.player.id);
   });
 });
 
-function getAllPlayers() {
+function getAllPlayers(id) {
   var players = [];
   Object.keys(io.sockets.connected).forEach(function(socketID) {
-    var player = io.sockets.connected[socketID].player;
-    if (player) players.push(player);
+    if(socketID !== id){
+      var player = io.sockets.connected[socketID].player;
+      if (player) players.push(player);
+    }
   });
   return players;
 }

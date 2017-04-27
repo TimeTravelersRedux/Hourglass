@@ -3,7 +3,7 @@
 // =============================================================================
 
 PlayState = {};
-PlayState.PlayerMap = [];
+PlayState.playerMap = {}
 PlayState.init = function() {
   this.game.renderer.renderSession.roundPixels = true;
 
@@ -25,11 +25,12 @@ PlayState.init = function() {
 }
 
 PlayState.addNewPlayer = function(id, x, y) {
-  let player = new Player(this.game, x,y)
+  let player = new Player(this.game, x, y)
   PlayState.playerMap[id] = this.game.add.existing(player)
+  PlayState.hasPlayers = true
 }
 
-PlayState.removePlayer = function(id){
+PlayState.removePlayer = function(id) {
   PlayState.playerMap[id].kill()
 }
 
@@ -64,7 +65,6 @@ PlayState.preload = function() {
 };
 
 PlayState.create = function() {
- PlayState.playerMap = {};
 
   // create sound entities
   this.sfx = {
@@ -109,9 +109,23 @@ PlayState._handleCollisions = function() {
       return this.hasKey && hero.body.touching.down;
     }, this);
 
-    if(PlayState.PlayerMap.length){
-      console.log('test')
-    }
+  if (PlayState.hasPlayers) {
+    let obj = PlayState.playerMap
+    for (key in obj)
+      this.game.physics.arcade.collide(obj[key], this.platforms)
+      this.game.physics.arcade.overlap(obj[key], this.coins, this._onHeroVsCoin,
+        null, this);
+      this.game.physics.arcade.overlap(obj[key], this.spiders,
+        this._onHeroVsEnemy, null, this);
+      this.game.physics.arcade.overlap(obj[key], this.key, this._onHeroVsKey,
+        null, this)
+      this.game.physics.arcade.overlap(obj[key], this.door, this._onHeroVsDoor,
+        // ignore if there is no key or the player is on air
+        function(hero, door) {
+          return this.hasKey && hero.body.touching.down;
+        }, this);
+  }
+
 };
 
 PlayState._handleInput = function() {
