@@ -19,6 +19,7 @@
   "homepage": "https://github.com/TimeTravelersRedux/Hourglass#readme",
   "dependencies": {
     "express": "^4.15.2",
-    "morgan": "^1.8.1"
+    "morgan": "^1.8.1",
+    "socket.io": "^1.7.3"
   }
 }
