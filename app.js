@@ -13,7 +13,7 @@ const app = express();
 app.use(morgan('dev'));
 
 // static and dynamic routing
-app.use(express.static(path.join(__dirname, '/hellophaser')));
+app.use(express.static(path.join(__dirname, '/start')));
 
 app.listen(3000, function(){
   console.log('listening on port 3000');
