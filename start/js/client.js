@@ -10,8 +10,11 @@ Client.socket.on('newplayer',function(data){
 });
 
 Client.socket.on('allplayers',function(data){
-    console.log(data);
     for(var i = 0; i < data.length; i++){
         PlayState.addNewPlayer(data[i].id,data[i].x,data[i].y);
     }
+});
+
+Client.socket.on('remove',function(id){
+    Game.removePlayer(id);
 });

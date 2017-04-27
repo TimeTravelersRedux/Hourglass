@@ -375,8 +375,7 @@ PlayState.init = function(data) {
 
 PlayState.addNewPlayer = function(id, x, y) {
   this.test = new Hero(this.game, x, y);
-  this.game.add.existing(this.test);
-  // PlayState.playerMap[id] = this.game.add.sprite(x, y, 'sprite');
+  PlayState.playerMap[id] = this.game.add.existing(this.test);
 };
 
 
