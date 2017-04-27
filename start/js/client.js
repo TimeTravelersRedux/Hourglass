@@ -16,5 +16,5 @@ Client.socket.on('allplayers',function(data){
 });
 
 Client.socket.on('remove',function(id){
-    Game.removePlayer(id);
+    PlayState.removePlayer(id);
 });
