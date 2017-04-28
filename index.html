@@ -3,27 +3,32 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Phaser - ES6 - Webpack</title>
+    <title>Hourglass</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
     <meta http-equiv="cleartype" content="on">
-
     <style>
-        html,
-        body {
-            margin: 0;
-            padding: 0;
-        }
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+    }
     </style>
 </head>
 
 <body>
-
     <div id="content"></div>
-    <script src="dist/vendor.bundle.js"></script>
-    <script src="dist/bundle.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
+    <script>
+    const socket = io();
+    const Hourglass = {
+        players: [],
+        currentPlayer: {}
+    }
+    </script>
+    <script src="/vendor.bundle.js" defer></script>
+    <script src="/bundle.js" defer></script>
 </body>
 
 </html>
