@@ -5,7 +5,7 @@
   "author": "leandro cabrera <leandcabrera@gmail.com>",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack",
+    "start": "webpack -w & nodemon --watch server -e js,html app.js",
     "deploy": "webpack --config webpack.production.config.js",
     "test": "eslint ./src/**/**.js"
   },
@@ -25,7 +25,10 @@
     "webpack": "^2.2.0"
   },
   "dependencies": {
+    "express": "^4.15.2",
+    "morgan": "^1.8.1",
     "phaser-ce": "^2.7.3",
+    "socketio": "^1.0.0",
     "webfontloader": "^1.6.27"
   }
 }
