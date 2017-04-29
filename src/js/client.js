@@ -9,16 +9,17 @@ function startClientGame(playersFromServer) {
 
 startClientGame()
 
-socket.getAllPlayers = function(player) {
-  socket.emit('getallplayers', player)
-}
+// socket.getAllPlayers = function(player) {
+//   socket.emit('getallplayers', player)
+// }
 
-socket.getGameState = function() {
-  socket.emit('getGameState')
-}
+// socket.getGameState = function() {
+//   socket.emit('getGameState')
+// }
 
 socket.on('serverUpdate', function(data) {
-  const newPlayers = data;
+  const newPlayers = data.players;
+  console.log('data from server: ', data)
   if (newPlayers.length) {
     newPlayers.forEach(player => (Hourglass.game.state.getCurrentState().addNewPlayer(player)))
     store.dispatch(updateState(newPlayers))
@@ -37,8 +38,8 @@ socket.on('serverUpdate', function(data) {
 //   }
 // })
 
-socket.on('remove', function(id) {
-  console.log("id", id);
-  console.log('player map: ', Hourglass.game.state.getCurrentState().playerMap)
-  Hourglass.game.state.getCurrentState().removePlayer(id)
-})
+// socket.on('remove', function(id) {
+//   console.log("id", id);
+//   console.log('player map: ', Hourglass.game.state.getCurrentState().playerMap)
+//   Hourglass.game.state.getCurrentState().removePlayer(id)
+// })

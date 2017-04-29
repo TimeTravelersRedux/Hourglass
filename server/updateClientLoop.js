@@ -11,7 +11,7 @@ const broadcastGameState = (io) => {
   console.log('broadcasting')
   broadcastInterval = setInterval(() => {
     let state = store.getState();
-    if (Object.keys(state).length) {
+    if (state.players.length) {
       io.emit('serverUpdate', state);
     }
   }, SERVER_UPDATE_RATE);
