@@ -24,7 +24,6 @@ export default class extends Phaser.State {
 
     this.coinPickupCount = 0
     this.hasKey = false
-    this.addNewPlayer = this.addNewPlayer.bind(this)
 
   }
   preload() {}
@@ -43,7 +42,6 @@ export default class extends Phaser.State {
     // create level
     this.game.add.image(0, 0, 'background')
     this._loadLevel(this.game.cache.getJSON('level:1'))
-
 
     // create hudå with scoreboards)
     this._createHud()
@@ -243,21 +241,23 @@ export default class extends Phaser.State {
         return this.hasKey && hero.body.touching.down
       }, this)
 
-    if (this.hasPlayers) {
-      let obj = this.playerMap
-      for (key in obj)
-        this.game.physics.arcade.collide(obj[key], this.platforms)
-      this.game.physics.arcade.overlap(obj[key], this.coins, this._onHeroVsCoin,
-        null, this)
-      this.game.physics.arcade.overlap(obj[key], this.spiders,
-        this._onHeroVsEnemy, null, this)
-      this.game.physics.arcade.overlap(obj[key], this.key, this._onHeroVsKey,
-        null, this)
-      this.game.physics.arcade.overlap(obj[key], this.door, this._onHeroVsDoor,
-        // ignore if there is no key or the player is on air
-        function(hero, door) {
-          return this.hasKey && hero.body.touching.down
-        }, this)
+    const players = Object.keys(this.playerMap)
+    if (players.length) {
+      players.forEach((playerId) => {
+        let player = this.playerMap[playerId]
+        this.game.physics.arcade.collide(player, this.platforms)
+        this.game.physics.arcade.overlap(player, this.coins, this._onHeroVsCoin,
+          null, this)
+        this.game.physics.arcade.overlap(player, this.spiders,
+          this._onHeroVsEnemy, null, this)
+        this.game.physics.arcade.overlap(player, this.key, this._onHeroVsKey,
+          null, this)
+        this.game.physics.arcade.overlap(player, this.door, this._onHeroVsDoor,
+          // ignore if there is no key or the player is on air
+          function(hero, door) {
+            return this.hasKey && hero.body.touching.down
+          }, this)
+      })
     }
 
   }
