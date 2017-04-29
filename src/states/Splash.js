@@ -16,7 +16,7 @@ export default class extends Phaser.State {
     this.load.spritesheet('hero', 'assets/images/hero.png', 36, 42, 8)
     this.load.json('level:1', '/assets/data/level01.json')
 
-    this.load.image('font:numbers', 'images/numbers.png')
+    this.load.image('font:numbers', '/assets/images/numbers.png')
     this.load.image('background', '/assets/images/background.png')
     this.load.image('ground', '/assets/images/ground.png')
     this.load.image('grass:8x1', '/assets/images/grass_8x1.png')

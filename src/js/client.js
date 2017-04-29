@@ -1,20 +1,48 @@
-var Client = {}
-Client.socket = io.connect()
+import Game from '../main.js'
 
-Client.askNewPlayer = function() {
-  Client.socket.emit('newplayer')
+
+//We attach all functions to a socket in here
+const attachFunctions = (socket) => {
+  // socket.on('playerUpdate', dispatchPlayerUpdates);
+  // socket.on('currentLobbyer', dispatchCurrentLobbyer);
+  // socket.on('messagesUpdate', dispatchNewMessage);
+  // socket.on('startGame', startClientGame)
+  // socket.on('askNewPl', dispatchScoreUpdate);
+  // socket.on('lobbyUpdate', dispatchLobbyState);
+  // socket.on('serverUpdate', dispatchServerState);
+  // socket.on('gamePlayingUpdate', dispatchGamePlayingUpdate);
+  // socket.on('resetGame', dispatchReducerReset);
+};
+
+function startClientGame(playersFromServer) {
+  // let state = store.getState();
+  console.log(Hourglass)
+  Hourglass.game = new Game()
+    // store.dispatch(loadPlayers(playersFromServer));
+  Hourglass.game.startGame('Boot', true, false, "../assets/data/level01.json")
 }
 
-Client.socket.on('newplayer', function(data) {
-  PlayState.addNewPlayer(data.id, data.x, data.y)
+// We could call
+attachFunctions(socket)
+startClientGame()
+
+// // var Client = {}
+// // Client.socket = io.connect()
+
+socket.askNewPlayer = function() {
+  socket.emit('newplayer')
+}
+
+socket.on('newplayer', function(data) {
+  Hourglass.game.state.game.addNewPlayer(data.id, data.x, data.y)
 })
 
-Client.socket.on('allplayers', function(data) {
-  for (var i = 0; i < data.length; i++) {
-    PlayState.addNewPlayer(data[i].id, data[i].x, data[i].y)
-  }
-})
+// // Client.socket.on('allplayers', function(data) {
+// //   for (var i = 0; i < data.length; i++) {
+// //     GameInstance.addNewPlayer(data[i].id, data[i].x, data[i].y)
+// //   }
+// // })
 
-Client.socket.on('remove', function(id) {
-  PlayState.removePlayer(id)
-})
+// // Client.socket.on('remove', function(id) {
+// //   GameInstance.removePlayer(id)
+// // })

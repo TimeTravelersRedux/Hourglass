@@ -1,62 +1,61 @@
-'use strict';
+'use strict'
 // built-in modules
-const path = require('path');
+const path = require('path')
 
 // npm modules
-const express = require('express');
-const morgan = require('morgan');
+const express = require('express')
+const morgan = require('morgan')
 
 // instantiate the express app
-const app = express();
+const app = express()
 
 // instantiate web sockets
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
+var server = require('http').Server(app)
+var io = require('socket.io')(server)
 
 // logging middleware
-app.use(morgan('dev'));
+app.use(morgan('dev'))
 
 // set up static routes
-app.use('/images', express.static(__dirname + '/start/images'))
-app.use('/js', express.static(__dirname + '/start/js'))
-app.use('/data', express.static(__dirname + '/start/data'))
+app.use('/', express.static(__dirname + '/dist'))
+app.use('/assets', express.static(__dirname + '/assets'))
 
 app.get('/', function(req, res) {
-  res.sendFile(__dirname + '/start/index.html')
+  res.sendFile(__dirname + '/index.html')
 })
 
-
-server.lastPlayerID = 0; // Keep track of the last id assigned to a new player
+server.lastPlayerID = 0 // Keep track of the last id assigned to a new player
 
 io.on('connection', function(socket) {
   socket.on('newplayer', function() {
+    console.log('testEER')
     socket.player = {
       id: server.lastPlayerID++,
       x: randomInt(100, 400),
       y: randomInt(100, 400)
-    };
-    socket.emit('allplayers', getAllPlayers(socket.id));
-    socket.broadcast.emit('newplayer', socket.player);
-  });
+    }
+    socket.emit('allplayers', getAllPlayers(socket.id))
+    socket.broadcast.emit('newplayer', socket.player)
+  })
 
-  socket.on('disconnect', function() {
-    io.emit('remove',socket.player.id);
-  });
-});
+  // socket.on('disconnect', function() {
+  //   // io.emit('remove', socket.player.id)
+  // })
+})
 
 function getAllPlayers(id) {
-  var players = [];
+  var players = []
   Object.keys(io.sockets.connected).forEach(function(socketID) {
-    if(socketID !== id){
-      var player = io.sockets.connected[socketID].player;
-      if (player) players.push(player);
+    if (socketID !== id) {
+      var player = io.sockets.connected[socketID].player
+      if (player) players.push(player)
     }
-  });
-  return players;
+  })
+  return players
 }
 
 function randomInt(low, high) {
-  return Math.floor(Math.random() * (high - low) + low);
+  return Math.floor(Math.random() * (high - low) + low)
 }
 
 

@@ -15,7 +15,7 @@ module.exports = {
   entry: {
     app: [
       'babel-polyfill',
-      path.resolve(__dirname, 'src/main.js')
+      path.resolve(__dirname, 'src/js/client')
     ],
     vendor: ['pixi', 'p2', 'phaser', 'webfontloader']
 
