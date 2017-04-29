@@ -2,11 +2,9 @@ const _ = require('lodash')
 
 // ACTION CREATORS
 
-const newPlayer = (socketId, x, y) => ({
+const newPlayer = (player) => ({
   type: 'NEW_PLAYER',
-  socketId,
-  x,
-  y
+  player
 });
 
 const removePlayer = (socketId) => ({
@@ -14,20 +12,15 @@ const removePlayer = (socketId) => ({
   socketId
 });
 
-
-
-const updatePlayer = (socketId, data) => ({
-  type: 'UPDATE_PLAYER',
-  socketId: socketId,
-  x: data[0],
-  y: data[1]
+const updatePlayer = (player) => ({
+  type: 'UPDATE_OR_CREATE_PLAYER',
+  player
 });
 
 // REDUCER
 
 const initialState = {
-  playerMap: {
-  }
+  players: []
 }
 
 const reducer = (state = initialState, action) => {
@@ -36,10 +29,21 @@ const reducer = (state = initialState, action) => {
 
   switch (action.type) {
     case 'REMOVE_PLAYER':
-      // need to actually destroy the sprite, but not within redux?
-      delete newState.playerMap[action.socketId];
-    case 'UPDATE_PLAYER':
-      newState.playerMap[action.socketId] = [action.x, action.y]
+      newState.players = newState.players.filter((player) => {
+        player.id !== action.id
+      })
+      break
+    case 'UPDATE_OR_CREATE_PLAYER':
+      if (newState.players.some(player => player.id === action.player.id)) {
+        newState.players = newState.players.map((player) => {
+          if (player.id === action.player.id) {
+            return action.player
+          }
+        })
+      } else {
+        newState.players = newState.players.concat(action.player)
+      }
+      break
   }
 
   return newState;

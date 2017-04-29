@@ -1,19 +1,23 @@
 import Phaser from 'phaser'
 import store from '../store.js'
-import { moveHero } from '../reducer.js'
+import { setHero } from '../reducer.js'
 import throttle from 'lodash.throttle'
+import emitCurrentState from '../js/emitCurrentState'
 
 export default class extends Phaser.Sprite {
   constructor ({ socketId, game, x, y, asset }) {
     super(game, x, y, asset)
-    this.socketId = socketId
+    store.dispatch(setHero(socketId, x, y))
 
+    this.socketId = socketId
     this.anchor.setTo(0.5)
     this.game.physics.enable(this)
     this.body.collideWorldBounds = true
 
     this.animate()
+
     this.updatePosition = this.throttlePosUpdate()
+    emitCurrentState(socket)
   }
 
   animate () {
@@ -53,7 +57,7 @@ export default class extends Phaser.Sprite {
   }
 
   throttlePosUpdate(){
-    return throttle( () => store.dispatch(moveHero(this.socketId, this.body.position.x, this.body.position.y)),
+    return throttle( () => store.dispatch(setHero(this.socketId, this.body.position.x, this.body.position.y)),
     500)
   }
 

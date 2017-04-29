@@ -6,9 +6,8 @@ const CLIENT_EMIT_INTERVAL = 4000
 let emitID
 export default (socket) => {
   emitID = setInterval(() => {
-    let state = store.getState()
-    let currentPlayerPos = state.playerMap[socket.id]
-    socket.emit('clientUpdate', currentPlayerPos )
+    let hero = store.getState().hero
+    socket.emit('clientUpdate', hero)
   }, CLIENT_EMIT_INTERVAL)
   return emitID
 }

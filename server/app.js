@@ -38,20 +38,13 @@ app.get('/', function(req, res) {
 server.lastPlayerID = 0 // Keep track of the last id assigned to a new player
 
 io.on('connection', function(socket) {
-  socket.on('newplayer', function() {
-    socket.player = {
-      id: socket.id,
-      x: randomInt(100, 400),
-      y: randomInt(100, 400)
-    }
+  socket.on('getAllPlayers', function(data) {
     socket.emit('allplayers', getAllPlayersButMe(socket.id))
     socket.broadcast.emit('newplayer', socket.player)
   })
 
-
   socket.on('clientUpdate', (data) => {
-    console.log("socket.id before update Player", socket.id);
-    store.dispatch(updatePlayer(socket.id, data));
+    store.dispatch(updatePlayer(data));
   })
 
   socket.on('disconnect', function() {

@@ -3,7 +3,6 @@ import Phaser from 'phaser'
 import Hero from '../sprites/hero'
 import Spider from '../sprites/spider'
 import Player from '../sprites/player'
-import emitCurrentState from '../js/emitCurrentState'
 
 export default class extends Phaser.State {
   init() {
@@ -49,9 +48,7 @@ export default class extends Phaser.State {
 
     this.game.add.existing(this.hero)
 
-    socket.askNewPlayer()
-    console.log("socket Game", socket);
-    emitCurrentState(socket)
+    // socket.getAllPlayers(this.hero)
   }
 
   render() {
@@ -60,12 +57,15 @@ export default class extends Phaser.State {
     }
   }
 
-  addNewPlayer(socketId, x, y) {
+  addNewPlayer(playerData) {
+    if (this.playerMap[socketId]){
+      return
+    }
     let player = new Player({
-      socketId: socketId,
+      socketId: playerData.socketId,
       game: this.game,
-      x: x,
-      y: y,
+      x: playerData.x,
+      y: playerData.y,
       asset: 'hero'
     })
 
@@ -142,6 +142,7 @@ export default class extends Phaser.State {
       y: data.hero.y,
       asset: 'hero'
     })
+
   }
 
   _spawnCoin(coin) {

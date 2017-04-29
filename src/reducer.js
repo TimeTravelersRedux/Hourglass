@@ -2,31 +2,23 @@ import _ from 'lodash'
 
 // ACTION CREATORS
 
-export const newPlayer = (id, x, y) => ({
-    type: 'NEW_PLAYER',
-    id,
-    x,
-    y
-});
-
-export const removePlayer = (id) => ({
-    type: 'REMOVE_PLAYER',
-    id
-});
-
-
-
-export const moveHero = (id, x, y) => ({
-  type: 'MOVE_HERO',
+export const setHero = (id, x, y) => ({
+  type: 'SET_HERO',
   id,
   x,
   y
-});
+})
+
+export const updateState = (players) => ({
+  type: 'UPDATE_STATE',
+  players
+})
 
 // REDUCER
 
 const initialState = {
-  playerMap: {}
+  hero: {},
+  players: []
 }
 
 const reducer = (state = initialState, action) => {
@@ -34,16 +26,15 @@ const reducer = (state = initialState, action) => {
   Object.freeze(state)
 
   switch (action.type) {
-    case 'NEW_PLAYER':
-      newState.playerMap[action.id] = [action.x, action.y]
-    case 'REMOVE_PLAYER':
-      // need to actually destroy the sprite, but not within redux?
-      delete newState.playerMap[action.id];
-    case 'MOVE_HERO':
-      newState.playerMap[action.id] = [action.x, action.y]
+    case 'UPDATE_STATE':
+      newState.players = action.players
+      break
+    case 'SET_HERO':
+      newState.hero = { id: action.id, x: action.x, y: action.y }
+      break
   }
 
-  return newState;
+  return newState
 }
 
 export default reducer
