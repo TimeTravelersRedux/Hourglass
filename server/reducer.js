@@ -35,12 +35,17 @@ const reducer = (state = initialState, action) => {
       break
     case 'UPDATE_OR_CREATE_PLAYER':
       if (newState.players.some(player => player.id === action.player.id)) {
+        console.log('insider reducer about to crash: ', action.player)
+
         newState.players = newState.players.map((player) => {
           if (player.id === action.player.id) {
             return action.player
           }
+          return player
         })
       } else {
+        console.log('else is firing: ', action.player)
+
         newState.players = newState.players.concat(action.player)
       }
       break

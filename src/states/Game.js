@@ -58,18 +58,18 @@ export default class extends Phaser.State {
   }
 
   addNewPlayer(playerData) {
-    if (this.playerMap[socketId]){
+    if (this.playerMap[playerData.id]){
       return
     }
     let player = new Player({
-      socketId: playerData.socketId,
+      socketId: playerData.id,
       game: this.game,
       x: playerData.x,
       y: playerData.y,
       asset: 'hero'
     })
 
-    this.playerMap[socketId] = this.game.add.existing(player)
+    this.playerMap[playerData.id] = this.game.add.existing(player)
   }
 
   removePlayer(id) {

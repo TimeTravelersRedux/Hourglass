@@ -38,12 +38,13 @@ app.get('/', function(req, res) {
 server.lastPlayerID = 0 // Keep track of the last id assigned to a new player
 
 io.on('connection', function(socket) {
-  socket.on('getAllPlayers', function(data) {
-    socket.emit('allplayers', getAllPlayersButMe(socket.id))
-    socket.broadcast.emit('newplayer', socket.player)
-  })
+  // socket.on('getAllPlayers', function(data) {
+  //   socket.emit('allplayers', getAllPlayersButMe(socket.id))
+  //   socket.broadcast.emit('newplayer', socket.player)
+  // })
 
   socket.on('clientUpdate', (data) => {
+    console.log('new client data: ', data)
     store.dispatch(updatePlayer(data));
   })
 
@@ -56,20 +57,20 @@ io.on('connection', function(socket) {
 broadcastGameState(io)
 
 
-function getAllPlayersButMe(id) {
-  var players = []
-  Object.keys(io.sockets.connected).forEach(function(socketID) {
-    if (socketID !== id) {
-      var player = io.sockets.connected[socketID].player
-      if (player) players.push(player)
-    }
-  })
-  return players
-}
-
-function randomInt(low, high) {
-  return Math.floor(Math.random() * (high - low) + low)
-}
+// function getAllPlayersButMe(id) {
+//   var players = []
+//   Object.keys(io.sockets.connected).forEach(function(socketID) {
+//     if (socketID !== id) {
+//       var player = io.sockets.connected[socketID].player
+//       if (player) players.push(player)
+//     }
+//   })
+//   return players
+// }
+//
+// function randomInt(low, high) {
+//   return Math.floor(Math.random() * (high - low) + low)
+// }
 
 
 server.listen(3000, function() {
