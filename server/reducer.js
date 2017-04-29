@@ -35,8 +35,6 @@ const reducer = (state = initialState, action) => {
   const newState = _.merge({}, state);
 
   switch (action.type) {
-    case 'NEW_PLAYER':
-      newState.playerMap[action.socketId] = [action.x, action.y]
     case 'REMOVE_PLAYER':
       // need to actually destroy the sprite, but not within redux?
       delete newState.playerMap[action.socketId];

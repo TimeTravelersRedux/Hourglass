@@ -143,8 +143,6 @@ export default class extends Phaser.State {
       y: data.hero.y,
       asset: 'hero'
     })
-
-    console.log("hero", this.hero);
   }
 
   _spawnCoin(coin) {

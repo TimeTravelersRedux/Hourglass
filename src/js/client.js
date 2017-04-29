@@ -54,5 +54,6 @@ socket.on('allplayers', function(data) {
 })
 
 socket.on('remove', function(id) {
+  console.log("id", id);
   Hourglass.game.state.getCurrentState().removePlayer(id)
 })
