@@ -13,15 +13,24 @@ const app = express()
 var server = require('http').Server(app)
 var io = require('socket.io')(server)
 
+// Import Store
+const store = require('./store.js');
+
+// Store Dispatchers
+const {updatePlayer, removePlayer} = require('./reducers/players.js');
+
+// Import helper functions
+const {startGame, endGame} = require('./engine/updateClientLoop.js');
+
 // logging middleware
 app.use(morgan('dev'))
 
 // set up static routes
-app.use('/', express.static(__dirname + '/dist'))
-app.use('/assets', express.static(__dirname + '/assets'))
+app.use('/', express.static(path.resolve(__dirname, '..', 'dist')))
+app.use('/assets', express.static(path.resolve(__dirname, '..', 'assets')))
 
 app.get('/', function(req, res) {
-  res.sendFile(__dirname + '/index.html')
+  res.sendFile(path.resolve(__dirname, '..', 'index.html'))
 })
 
 server.lastPlayerID = 0 // Keep track of the last id assigned to a new player
