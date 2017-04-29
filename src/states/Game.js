@@ -3,8 +3,6 @@ import Phaser from 'phaser'
 import Hero from '../sprites/hero'
 import Spider from '../sprites/spider'
 import Player from '../sprites/player'
-import Client from '../js/client'
-
 
 export default class extends Phaser.State {
   init() {
@@ -26,6 +24,7 @@ export default class extends Phaser.State {
 
     this.coinPickupCount = 0
     this.hasKey = false
+    this.addNewPlayer = this.addNewPlayer.bind(this)
 
   }
   preload() {}
