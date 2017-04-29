@@ -3,31 +3,30 @@ const _ = require('lodash')
 // ACTION CREATORS
 
 const newPlayer = (socketId, x, y) => ({
-    type: 'NEW_PLAYER',
-    socketId,
-    x,
-    y
-});
-
-const removePlayer = (socketId) => ({
-    type: 'REMOVE_PLAYER',
-    socketId
-});
-
-
-
-const updatePlayer = (socketId, x, y) => ({
-  type: 'UPDATE_PLAYER',
+  type: 'NEW_PLAYER',
   socketId,
   x,
   y
+});
+
+const removePlayer = (socketId) => ({
+  type: 'REMOVE_PLAYER',
+  socketId
+});
+
+
+
+const updatePlayer = (socketId, data) => ({
+  type: 'UPDATE_PLAYER',
+  socketId: socketId,
+  x: data[0],
+  y: data[1]
 });
 
 // REDUCER
 
 const initialState = {
   playerMap: {
-    1: [250, 150]
   }
 }
 

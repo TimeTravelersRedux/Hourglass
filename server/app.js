@@ -17,7 +17,7 @@ const { broadcastGameState } = require('./updateClientLoop')
 
 // Import Store
 const store = require('./store.js')
-
+const { updatePlayer } = require('./reducer.js')
 // Store Dispatchers
 // const {updatePlayer, removePlayer} = require('./reducers/players.js')
 
@@ -51,12 +51,11 @@ io.on('connection', function(socket) {
   // socket.on('disconnect', function() {
   //   // io.emit('remove', socket.player.id)
   // })
-  socket.on('getGameState', () => {
-      const state = store.getState()
-      socket.emit('allplayers', state)
+  socket.on('clientUpdate', (data) => {
+    console.log("data", data);
+    store.dispatch(updatePlayer(socket.id, data));
+    // socket.emit('allplayers', state)
   })
-
-
 })
 
 broadcastGameState(io)
