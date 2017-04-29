@@ -74,7 +74,6 @@ export default class extends Phaser.State {
 
   removePlayer(id) {
     this.playerMap[id].kill()
-    socket.removePlayer()
   }
 
   _loadLevel(data) {

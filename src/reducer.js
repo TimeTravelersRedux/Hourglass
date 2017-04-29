@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 // ACTION CREATORS
 
 export const newPlayer = (id, x, y) => ({
@@ -28,7 +30,8 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
-  const newState = Object.assign({}, state);
+  const newState = _.merge({}, state)
+  Object.freeze(state)
 
   switch (action.type) {
     case 'NEW_PLAYER':

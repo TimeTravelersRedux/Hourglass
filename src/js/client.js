@@ -1,6 +1,6 @@
 import Game from '../main.js'
 import store from '../store.js'
-import { moveHero } from '../reducer.js'
+import { newPlayer, moveHero } from '../reducer.js'
 
 
 
@@ -40,20 +40,28 @@ socket.getGameState = function() {
 }
 
 socket.on('serverUpdate', function(data){
+  console.log('server update: ', data)
   store.dispatch(moveHero(data))
 })
 
+
 socket.on('newplayer', function(data) {
+  console.log('new player data: ', data)
   Hourglass.game.state.getCurrentState().addNewPlayer(data.id, data.x, data.y)
+  // store.dispatch(newPlayer(data.id, data.x, data.y))
 })
 
 socket.on('allplayers', function(data) {
+  console.log('all players data: ', data)
   for (var i = 0; i < data.length; i++) {
     Hourglass.game.state.getCurrentState().addNewPlayer(data[i].id, data[i].x, data[i].y)
+
+    // store.dispatch(newPlayer(data.id, data.x, data.y))
   }
 })
 
 socket.on('remove', function(id) {
   console.log("id", id);
+  console.log('player map: ', Hourglass.game.state.getCurrentState().playerMap)
   Hourglass.game.state.getCurrentState().removePlayer(id)
 })

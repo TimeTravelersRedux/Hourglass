@@ -31,8 +31,8 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
+  var newState = _.merge({}, state);
   Object.freeze(state);
-  const newState = _.merge({}, state);
 
   switch (action.type) {
     case 'REMOVE_PLAYER':

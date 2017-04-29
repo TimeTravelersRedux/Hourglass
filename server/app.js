@@ -40,11 +40,11 @@ server.lastPlayerID = 0 // Keep track of the last id assigned to a new player
 io.on('connection', function(socket) {
   socket.on('newplayer', function() {
     socket.player = {
-      id: server.lastPlayerID++,
+      id: socket.id,
       x: randomInt(100, 400),
       y: randomInt(100, 400)
     }
-    socket.emit('allplayers', getAllPlayers(socket.id))
+    socket.emit('allplayers', getAllPlayersButMe(socket.id))
     socket.broadcast.emit('newplayer', socket.player)
   })
 
@@ -63,7 +63,7 @@ io.on('connection', function(socket) {
 broadcastGameState(io)
 
 
-function getAllPlayers(id) {
+function getAllPlayersButMe(id) {
   var players = []
   Object.keys(io.sockets.connected).forEach(function(socketID) {
     if (socketID !== id) {
