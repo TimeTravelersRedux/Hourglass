@@ -14,13 +14,12 @@ import Game from '../main.js'
   // socket.on('resetGame', dispatchReducerReset);
 // };
 
-
 // function startClientGame(playersFromServer) {
   // let state = store.getState();
-  console.log(Hourglass);
+  console.log(Hourglass)
   Hourglass.game = new Game()
   // store.dispatch(loadPlayers(playersFromServer));
-  Hourglass.game.startGame('BootState', true, false, "../assets/levels/main.json");
+  Hourglass.game.startGame('Boot', true, false, "../assets/data/level01.json")
 // }
 
 // attachFunctions(socket)
