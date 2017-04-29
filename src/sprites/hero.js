@@ -1,13 +1,19 @@
 import Phaser from 'phaser'
+import store from '../store.js'
+import { moveHero } from '../reducer.js'
+import throttle from 'lodash.throttle'
 
 export default class extends Phaser.Sprite {
-  constructor ({ game, x, y, asset }) {
+  constructor ({ socketId, game, x, y, asset }) {
     super(game, x, y, asset)
+    this.socketId = socketId
+
     this.anchor.setTo(0.5)
     this.game.physics.enable(this)
     this.body.collideWorldBounds = true
 
     this.animate()
+    this.updatePosition = this.throttlePosUpdate()
   }
 
   animate () {
@@ -34,6 +40,7 @@ export default class extends Phaser.Sprite {
 
     if (canJump) {
       this.body.velocity.y = -JUMP_SPEED
+
     }
 
     return canJump
@@ -42,10 +49,17 @@ export default class extends Phaser.Sprite {
   bounce() {
     const BOUNCE_SPEED = 200
     this.body.velocity.y = -BOUNCE_SPEED
+
+  }
+
+  throttlePosUpdate(){
+    return throttle( () => store.dispatch(moveHero(this.socketId, this.body.position.x, this.body.position.y)),
+    500)
   }
 
   update() {
-    // update sprite animation, if it needs changing
+    this.updatePosition()
+
     let animationName = this._getAnimationName()
     if (this.animations.name !== animationName) {
       this.animations.play(animationName)

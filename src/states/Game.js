@@ -135,6 +135,7 @@ export default class extends Phaser.State {
     // spawn hero
 
     this.hero = new Hero({
+      socketId: 1,
       game: this.game,
       x: data.hero.x,
       y: data.hero.y,

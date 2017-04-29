@@ -1,7 +1,15 @@
-const { createStore, applyMiddleware } = require('redux')
-const thunk = require('redux-thunk').default
+const redux = require('redux')
+const reduxLogger = require('redux-logger')
 
-// reducers
-const mainReducer = require('./reducers/index.js')
+const {reducer} = require('./reducer.js')
 
-module.exports = createStore(mainReducer, applyMiddleware(thunk))
+console.dir(reducer)
+
+const store = redux.createStore(
+  reducer,
+  redux.applyMiddleware(
+    reduxLogger.createLogger({collapsed: true})
+  )
+);
+
+module.exports = store

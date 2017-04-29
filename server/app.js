@@ -13,6 +13,8 @@ const app = express()
 var server = require('http').Server(app)
 var io = require('socket.io')(server)
 
+const { broadcastGameState } = require('./updateClientLoop')
+
 // Import Store
 const store = require('./store.js')
 
@@ -49,7 +51,16 @@ io.on('connection', function(socket) {
   // socket.on('disconnect', function() {
   //   // io.emit('remove', socket.player.id)
   // })
+  socket.on('getGameState', () => {
+      const state = store.getState()
+      socket.emit('allplayers', state)
+  })
+
+
 })
+
+broadcastGameState(io)
+
 
 function getAllPlayers(id) {
   var players = []

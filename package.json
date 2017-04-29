@@ -20,9 +20,12 @@
   "homepage": "https://github.com/TimeTravelersRedux/Hourglass#readme",
   "dependencies": {
     "express": "^4.15.2",
+    "lodash": "^4.17.4",
+    "lodash.throttle": "^4.1.1",
     "morgan": "^1.8.1",
     "phaser-ce": "^2.7.3",
     "redux": "^3.6.0",
+    "redux-logger": "^3.0.1",
     "redux-thunk": "^2.2.0",
     "socketio": "^1.0.0",
     "webfontloader": "^1.6.27"

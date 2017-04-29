@@ -1,4 +1,7 @@
 import Game from '../main.js'
+import store from '../store.js'
+import { moveHero } from '../reducer.js'
+
 
 
 //We attach all functions to a socket in here
@@ -31,6 +34,14 @@ startClientGame()
 socket.askNewPlayer = function() {
   socket.emit('newplayer')
 }
+
+socket.getGameState = function() {
+  socket.emit('getGameState')
+}
+
+socket.on('serverUpdate', function(data){
+  store.dispatch(moveHero(data))
+})
 
 socket.on('newplayer', function(data) {
   Hourglass.game.state.getCurrentState().addNewPlayer(data.id, data.x, data.y)

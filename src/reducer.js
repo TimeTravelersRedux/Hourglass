@@ -1,21 +1,21 @@
 // ACTION CREATORS
 
-const newPlayer = (id, x, y) => ({
+export const newPlayer = (id, x, y) => ({
     type: 'NEW_PLAYER',
     id,
     x,
     y
 });
 
-const removePlayer = (id) => ({
+export const removePlayer = (id) => ({
     type: 'REMOVE_PLAYER',
     id
 });
 
 
 
-const movePlayer = (id, x, y) => ({
-  type: 'MOVE_PLAYER',
+export const moveHero = (id, x, y) => ({
+  type: 'MOVE_HERO',
   id,
   x,
   y
@@ -27,7 +27,7 @@ const initialState = {
   playerMap: {}
 }
 
-export const reducer = (initialState, action) => {
+const reducer = (state = initialState, action) => {
   const newState = Object.assign({}, state);
 
   switch (action.type) {
@@ -35,10 +35,12 @@ export const reducer = (initialState, action) => {
       newState.playerMap[action.id] = [action.x, action.y]
     case 'REMOVE_PLAYER':
       // need to actually destroy the sprite, but not within redux?
-      delete newState.playerMap[id];
-    case 'MOVE_PLAYER':
-      newState.playerMap[action.id] = [x, y]
+      delete newState.playerMap[action.id];
+    case 'MOVE_HERO':
+      newState.playerMap[action.id] = [action.x, action.y]
   }
 
   return newState;
 }
+
+export default reducer
