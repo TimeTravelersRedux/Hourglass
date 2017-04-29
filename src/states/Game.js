@@ -58,19 +58,21 @@ export default class extends Phaser.State {
     }
   }
 
-  addNewPlayer(id, x, y) {
+  addNewPlayer(socketId, x, y) {
     let player = new Player({
+      socketId: socketId,
       game: this.game,
       x: x,
       y: y,
       asset: 'hero'
     })
 
-    this.playerMap[id] = this.game.add.existing(player)
+    this.playerMap[socketId] = this.game.add.existing(player)
   }
 
   removePlayer(id) {
     this.playerMap[id].kill()
+    socket.removePlayer()
   }
 
   _loadLevel(data) {
@@ -246,17 +248,10 @@ export default class extends Phaser.State {
       players.forEach((playerId) => {
         let player = this.playerMap[playerId]
         this.game.physics.arcade.collide(player, this.platforms)
-        this.game.physics.arcade.overlap(player, this.coins, this._onHeroVsCoin,
-          null, this)
-        this.game.physics.arcade.overlap(player, this.spiders,
-          this._onHeroVsEnemy, null, this)
-        this.game.physics.arcade.overlap(player, this.key, this._onHeroVsKey,
-          null, this)
-        this.game.physics.arcade.overlap(player, this.door, this._onHeroVsDoor,
-          // ignore if there is no key or the player is on air
-          function(hero, door) {
-            return this.hasKey && hero.body.touching.down
-          }, this)
+        this.game.physics.arcade.collide(this.hero, player)
+        this.game.physics.arcade.overlap(player, this.coins, this._onHeroVsCoin, null, this)
+        this.game.physics.arcade.overlap(player, this.key, this._onHeroVsKey,null, this)
+
       })
     }
 
