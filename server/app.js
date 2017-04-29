@@ -14,13 +14,13 @@ var server = require('http').Server(app)
 var io = require('socket.io')(server)
 
 // Import Store
-const store = require('./store.js');
+const store = require('./store.js')
 
 // Store Dispatchers
-const {updatePlayer, removePlayer} = require('./reducers/players.js');
+// const {updatePlayer, removePlayer} = require('./reducers/players.js')
 
 // Import helper functions
-const {startGame, endGame} = require('./engine/updateClientLoop.js');
+// const {startGame, endGame} = require('./engine/updateClientLoop.js')
 
 // logging middleware
 app.use(morgan('dev'))
@@ -37,7 +37,6 @@ server.lastPlayerID = 0 // Keep track of the last id assigned to a new player
 
 io.on('connection', function(socket) {
   socket.on('newplayer', function() {
-    console.log('testEER')
     socket.player = {
       id: server.lastPlayerID++,
       x: randomInt(100, 400),
