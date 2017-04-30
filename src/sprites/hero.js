@@ -7,11 +7,13 @@ import emitCurrentState from '../js/emitCurrentState'
 export default class extends Phaser.Sprite {
   constructor ({ socketId, game, x, y, asset }) {
     super(game, x, y, asset)
+    console.log(y);
     store.dispatch(setHero(socketId, x, y))
 
     this.socketId = socketId
     this.anchor.setTo(0.5)
     this.game.physics.enable(this)
+    console.log(this.body);
     this.body.collideWorldBounds = true
 
     this.animate()
@@ -57,7 +59,7 @@ export default class extends Phaser.Sprite {
   }
 
   throttlePosUpdate(){
-    return throttle( () => store.dispatch(setHero(this.socketId, this.body.position.x, this.body.position.y)),
+    return throttle( () => store.dispatch(setHero(this.socketId, this.x, this.y)),
     1000/30)
   }
 

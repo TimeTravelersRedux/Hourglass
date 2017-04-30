@@ -75,6 +75,8 @@ export default class extends Phaser.State {
   moveOtherPlayer(playerData) {
     let player = this.playerMap[playerData.id]
     console.log("playerData", playerData);
+    console.log(player.position)
+    console.log(player.position.y - playerData.y)
     player.x = playerData.x
     player.y = playerData.y
     // this.add.tween(player).to({
@@ -145,12 +147,11 @@ export default class extends Phaser.State {
       this)
 
     // spawn hero
-
     this.hero = new Hero({
       socketId: socket.id,
       game: this.game,
-      x: data.hero.x,
-      y: data.hero.y,
+      x: [Math.floor(Math.random()*200],
+      y: 525,
       asset: 'hero'
     })
 

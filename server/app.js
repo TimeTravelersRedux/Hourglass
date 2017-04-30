@@ -44,7 +44,7 @@ io.on('connection', function(socket) {
   // })
 
   socket.on('clientUpdate', (data) => {
-    console.log('new client data: ', data)
+    // console.log('new client data: ', data)
     store.dispatch(updatePlayer(data));
   })
 
