@@ -18,8 +18,8 @@ const { broadcastGameState } = require('./updateClientLoop')
 // Import Store
 const store = require('./store.js')
 const { updatePlayer, removePlayer } = require('./reducer.js')
-// Store Dispatchers
-// const {updatePlayer, removePlayer} = require('./reducers/players.js')
+  // Store Dispatchers
+  // const {updatePlayer, removePlayer} = require('./reducers/players.js')
 
 // Import helper functions
 // const {startGame, endGame} = require('./engine/updateClientLoop.js')
@@ -32,45 +32,29 @@ app.use('/', express.static(path.resolve(__dirname, '..', 'dist')))
 app.use('/assets', express.static(path.resolve(__dirname, '..', 'assets')))
 
 app.get('/', function(req, res) {
+  if (server.playerCount > 1) {
+    res.status(503).send("Please wait your turn...")
+  }
   res.sendFile(path.resolve(__dirname, '..', 'index.html'))
 })
 
-server.lastPlayerID = 0 // Keep track of the last id assigned to a new player
+server.playerCount = 0 // Keep track of the last id assigned to a new player
 
 io.on('connection', function(socket) {
-  // socket.on('getAllPlayers', function(data) {
-  //   socket.emit('allplayers', getAllPlayersButMe(socket.id))
-  //   socket.broadcast.emit('newplayer', socket.player)
-  // })
+  server.playerCount++
 
   socket.on('clientUpdate', (data) => {
-    // console.log('new client data: ', data)
     store.dispatch(updatePlayer(data));
   })
 
   socket.on('disconnect', function() {
-    io.emit('remove', socket.id)
+    server.playerCount--
+      io.emit('remove', socket.id)
     store.dispatch(removePlayer(socket.id))
   })
 })
 
 broadcastGameState(io)
-
-
-// function getAllPlayersButMe(id) {
-//   var players = []
-//   Object.keys(io.sockets.connected).forEach(function(socketID) {
-//     if (socketID !== id) {
-//       var player = io.sockets.connected[socketID].player
-//       if (player) players.push(player)
-//     }
-//   })
-//   return players
-// }
-//
-// function randomInt(low, high) {
-//   return Math.floor(Math.random() * (high - low) + low)
-// }
 
 
 server.listen(3000, function() {
