@@ -17,7 +17,7 @@ export default class extends Phaser.State {
     this.load.json('level:1', '/assets/data/level01.json')
 
     this.load.image('font:numbers', '/assets/images/numbers.png')
-    this.load.image('background', '/assets/images/background.png')
+    this.load.image('background', '/assets/images/stars4.jpg')
     this.load.image('ground', '/assets/images/ground.png')
     this.load.image('grass:8x1', '/assets/images/grass_8x1.png')
     this.load.image('grass:6x1', '/assets/images/grass_6x1.png')
