@@ -36,6 +36,7 @@ export default class extends Phaser.State {
     this.load.spritesheet('door', '/assets/images/door.png', 42, 66)
     this.load.spritesheet('icon:key', '/assets/images/key_icon.png', 34, 30)
 
+    this.load.audio('sfx:background', 'assets/audio/finaltrimmed.ogg')
     this.load.audio('sfx:jump', 'assets/audio/jump.wav')
     this.load.audio('sfx:coin', 'assets/audio/coin.wav')
     this.load.audio('sfx:stomp', 'assets/audio/stomp.wav')
@@ -46,5 +47,6 @@ export default class extends Phaser.State {
 
   create () {
     this.state.start('Game')
+
   }
 }

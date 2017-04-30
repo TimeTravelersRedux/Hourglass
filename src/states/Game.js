@@ -36,8 +36,12 @@ export default class extends Phaser.State {
       coin: this.game.add.audio('sfx:coin'),
       stomp: this.game.add.audio('sfx:stomp'),
       key: this.game.add.audio('sfx:key'),
-      door: this.game.add.audio('sfx:door')
+      door: this.game.add.audio('sfx:door'),
+      background: this.game.add.audio('sfx:background')
     }
+
+    this.sfx.background.play()
+
 
     // create level
     this.game.add.image(0, 0, 'background')
