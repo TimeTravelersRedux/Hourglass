@@ -150,7 +150,7 @@ export default class extends Phaser.State {
     this.hero = new Hero({
       socketId: socket.id,
       game: this.game,
-      x: [Math.floor(Math.random()*200],
+      x: Math.floor(Math.random()*200),
       y: 525,
       asset: 'hero'
     })
