@@ -42,8 +42,6 @@ const reducer = (state = initialState, action) => {
           return player
         })
       } else {
-        console.log('else is firing: ', action.player)
-
         newState.players = newState.players.concat(action.player)
       }
       break
