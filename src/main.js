@@ -25,4 +25,8 @@ export default class Game extends Phaser.Game {
     //Method is invoked in sockets.js
     this.state.start(key, clearWorld, clearCache, parameter)
   }
+
+  init(){
+    game.stage.disableVisibilityChange = true;
+};
 }

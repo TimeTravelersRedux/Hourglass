@@ -58,7 +58,7 @@ export default class extends Phaser.Sprite {
 
   throttlePosUpdate(){
     return throttle( () => store.dispatch(setHero(this.socketId, this.body.position.x, this.body.position.y)),
-    5000)
+    1000/30)
   }
 
   update() {

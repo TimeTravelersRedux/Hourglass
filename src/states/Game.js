@@ -58,18 +58,26 @@ export default class extends Phaser.State {
   }
 
   addNewPlayer(playerData) {
-    if (this.playerMap[playerData.id]){
-      return
-    }
-    let player = new Player({
-      socketId: playerData.id,
-      game: this.game,
-      x: playerData.x,
-      y: playerData.y,
-      asset: 'hero'
-    })
+    let player = this.playerMap[playerData.id]
+    if (!player) {
+      let newPlayer = new Player({
+        socketId: playerData.id,
+        game: this.game,
+        x: playerData.x,
+        y: playerData.y,
+        asset: 'hero'
+      })
 
-    this.playerMap[playerData.id] = this.game.add.existing(player)
+      this.playerMap[playerData.id] = this.game.add.existing(newPlayer)
+    }
+  }
+
+  moveOtherPlayer(playerData) {
+    let player = this.playerMap[playerData.id]
+    this.add.tween(player).to({
+      x: playerData.x,
+      y: playerData.y
+    }, 10, Phaser.Easing.Linear.None, true)
   }
 
   removePlayer(id) {
@@ -142,6 +150,9 @@ export default class extends Phaser.State {
       y: data.hero.y,
       asset: 'hero'
     })
+
+    this.playerMap[this.hero.socketId] = this.hero
+
 
   }
 

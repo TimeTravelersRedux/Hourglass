@@ -1,6 +1,6 @@
 import store from '../store.js'
 
-const CLIENT_EMIT_INTERVAL = 4000
+const CLIENT_EMIT_INTERVAL = 1000/30
 
 
 let emitID

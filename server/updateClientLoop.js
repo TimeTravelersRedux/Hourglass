@@ -1,7 +1,7 @@
 const store = require('./store.js');
 const { reducer } = require('./reducer.js');
 
-const SERVER_UPDATE_RATE = 5000;
+const SERVER_UPDATE_RATE = 1000/30;
 
 let io;
 let broadcastInterval;
