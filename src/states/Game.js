@@ -25,11 +25,11 @@ export default class extends Phaser.State {
 
     this.coinPickupCount = 0
     this.hasKey = false
+
   }
   preload() {}
 
   create() {
-
     // create sound entities
     this.sfx = {
       jump: this.game.add.audio('sfx:jump'),
@@ -219,8 +219,7 @@ export default class extends Phaser.State {
 
   _onHeroVsDoor(hero, door) {
     this.sfx.door.play()
-    this.game.state.restart()
-      // TODO: go to the next level instead
+    this.state.start('GameOver')
   }
 
   _createHud() {
