@@ -31,7 +31,7 @@ app.use(morgan('dev'))
 app.use('/', express.static(path.resolve(__dirname, '..', 'dist')))
 app.use('/assets', express.static(path.resolve(__dirname, '..', 'assets')))
 
-app.get('/', function(req, res) {
+app.get('/*', function(req, res) {
   if (server.playerCount > 1) {
     res.status(503).send("Please wait your turn...")
   }
