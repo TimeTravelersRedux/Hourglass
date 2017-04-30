@@ -8,7 +8,6 @@ let broadcastInterval;
 
 
 const broadcastGameState = (io) => {
-  console.log('broadcasting')
   broadcastInterval = setInterval(() => {
     let state = store.getState();
     if (state.players.length) {

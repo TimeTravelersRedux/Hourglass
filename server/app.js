@@ -17,7 +17,7 @@ const { broadcastGameState } = require('./updateClientLoop')
 
 // Import Store
 const store = require('./store.js')
-const { updatePlayer, removePlayer } = require('./reducer.js')
+const { updatePlayer, removePlayer, updateKeyHolder } = require('./reducer.js')
   // Store Dispatchers
   // const {updatePlayer, removePlayer} = require('./reducers/players.js')
 
@@ -43,7 +43,8 @@ app.get('/*', function(req, res, next) {
 io.on('connect', function(socket) {
   connectCounter++
   socket.on('clientUpdate', (data) => {
-    store.dispatch(updatePlayer(data));
+    store.dispatch(updatePlayer(data.player));
+    store.dispatch(updateKeyHolder(data.keyHolderId));
   })
 
   socket.on('gameover', (winnerPickupCount) => {
@@ -52,6 +53,10 @@ io.on('connect', function(socket) {
 
   socket.on('restart', () => {
     io.emit('restart')
+  })
+
+  socket.on('hourglass', () => {
+    socket.broadcast.emit('hourglass')
   })
 
   socket.on('disconnect', function() {

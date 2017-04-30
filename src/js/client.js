@@ -1,6 +1,8 @@
 import Game from '../main.js'
 import store from '../store.js'
-import { updateState } from '../reducer.js'
+import { updateState,setKeyHolderId } from '../reducer.js'
+import { gotoState } from '../historyActions'
+import stateHistory from '../stateHistory'
 
 function startClientGame(playersFromServer) {
   Hourglass.game = new Game()
@@ -11,9 +13,10 @@ startClientGame()
 
 socket.on('serverUpdate', function(data) {
   if (!Hourglass.game.state.getCurrentState() || Hourglass.game.state.getCurrentState().key !== 'Game') {
-    console.log('Loading')
+    return
   } else {
     const newPlayers = data.players;
+    const keyHolderId = data.keyHolderId
     if (newPlayers.length) {
       newPlayers.forEach(player => {
         if (player.id !== socket.id) {
@@ -28,18 +31,22 @@ socket.on('serverUpdate', function(data) {
 
 socket.on('remove', function(socketId) {
   if (!Hourglass.game.state.getCurrentState() || Hourglass.game.state.getCurrentState().key !== 'Game') {
-    console.log('Loading...')
   } else {
     Hourglass.game.state.getCurrentState().removePlayer(socketId)
   }
 })
 
+socket.on('hourglass', function() {
+  const pastCount = stateHistory.past.length
+  const halfway = Math.floor(pastCount/2)
+  const oldHero = stateHistory.past[halfway].hero
+  Hourglass.game.state.getCurrentState().moveHero(oldHero)
+  Hourglass.game.state.getCurrentState()._handleKey()
+  store.dispatch(setKeyHolderId(''))
+})
+
 socket.on('gameover', function(winnerPickupCount) {
-  // console.log('how many coins I got: ', Hourglass.game.state.states.Game.hero.coinPickupCount)
-  // console.log('how many coins winner got: ', winnerPickupCount)
-
   Hourglass.winnerPickupCount = winnerPickupCount
-
   Hourglass.game.state.start('GameOver')
 })
 

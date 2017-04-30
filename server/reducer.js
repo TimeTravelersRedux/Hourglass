@@ -17,10 +17,16 @@ const updatePlayer = (player) => ({
   player
 });
 
+const updateKeyHolder = (keyHolderId) => ({
+  type: 'UPDATE_KEY_HOLDER',
+  keyHolderId
+});
+
 // REDUCER
 
 const initialState = {
-  players: []
+  players: [],
+  keyHolderId: ''
 }
 
 const reducer = (state = initialState, action) => {
@@ -32,6 +38,9 @@ const reducer = (state = initialState, action) => {
       newState.players = newState.players.filter((player) => {
         player.id !== action.id
       })
+      break
+    case 'UPDATE_KEY_HOLDER':
+      newState.keyHolderId = action.keyHolderId
       break
     case 'UPDATE_OR_CREATE_PLAYER':
       if (newState.players.some(player => player.id === action.player.id)) {
@@ -54,5 +63,6 @@ module.exports = {
   reducer,
   updatePlayer,
   newPlayer,
-  removePlayer
+  removePlayer,
+  updateKeyHolder
 }

@@ -4,6 +4,8 @@ import Hero from '../sprites/hero'
 import Spider from '../sprites/spider'
 import Player from '../sprites/player'
 import throttle from 'lodash.throttle'
+import store from '../store'
+import {setKeyHolderId} from '../reducer'
 
 export default class extends Phaser.State {
   init() {
@@ -13,7 +15,8 @@ export default class extends Phaser.State {
     this.keys = this.game.input.keyboard.addKeys({
       left: Phaser.KeyCode.LEFT,
       right: Phaser.KeyCode.RIGHT,
-      up: Phaser.KeyCode.UP
+      up: Phaser.KeyCode.UP,
+      down: Phaser.KeyCode.DOWN
     })
 
     this.keys.up.onDown.add(function() {
@@ -23,6 +26,13 @@ export default class extends Phaser.State {
       }
     }, this)
 
+    this.keys.down.onDown.add(function() {
+      if (this.hero.coinPickupCount >= 3) {
+        socket.emit('hourglass')
+        this._handleKey()
+        this.hero.coinPickupCount -= 3
+      }
+    },this)
 
   }
   preload() {}
@@ -54,9 +64,9 @@ export default class extends Phaser.State {
   }
 
   render() {
-    if (__DEV__) {
-      this.game.debug.spriteInfo(this.hero, 32, 32)
-    }
+    // if (__DEV__) {
+    //   this.game.debug.spriteInfo(this.hero, 32, 32)
+    // }
   }
 
   addNewPlayer(playerData) {
@@ -78,6 +88,11 @@ export default class extends Phaser.State {
     let player = this.playerMap[playerData.id]
     player.x = playerData.x
     player.y = playerData.y
+  }
+
+  moveHero(heroData) {
+    this.hero.x = heroData.x
+    this.hero.y = heroData.y
   }
 
   removePlayer(id) {
@@ -137,6 +152,8 @@ export default class extends Phaser.State {
       y: 525,
       asset: 'hero'
     })
+
+
 
     this.playerMap[this.hero.socketId] = this.hero
 
@@ -198,6 +215,7 @@ export default class extends Phaser.State {
 
   _onHeroVsKey(hero, key) {
     this.sfx.key.play('', 0, .01)
+    store.dispatch(setKeyHolderId(this.hero.socketId))
     key.kill()
     hero.hasKey = true
   }
@@ -239,6 +257,7 @@ export default class extends Phaser.State {
     this.gameKeyIcon.frame = this.hero.hasKey ? 1 : 0
   }
 
+
   _handleCollisions() {
     this.game.physics.arcade.collide(this.spiders, this.platforms)
     this.game.physics.arcade.collide(this.spiders, this.enemyWalls)
@@ -279,5 +298,11 @@ export default class extends Phaser.State {
     }
   }
 
+  _handleKey(){
+    if(!this.gameKey.alive){
+      this._spawnKey(903, 105)
+      this.hero.hasKey = false
+    }
+  }
 
 }
