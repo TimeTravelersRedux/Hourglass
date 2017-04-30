@@ -31,12 +31,12 @@ app.use(morgan('dev'))
 app.use('/', express.static(path.resolve(__dirname, '..', 'dist')))
 app.use('/assets', express.static(path.resolve(__dirname, '..', 'assets')))
 
-app.get('/*', function(req, res,next) {
+app.get('/*', function(req, res, next) {
   if (server.playerCount > 1) {
     res.status(503).send("Please wait your turn...")
-    next()
+  } else {
+    res.sendFile(path.resolve(__dirname, '..', 'index.html'))
   }
-  res.sendFile(path.resolve(__dirname, '..', 'index.html'))
 })
 
 server.playerCount = 0 // Keep track of the last id assigned to a new player
@@ -44,9 +44,9 @@ server.playerCount = 0 // Keep track of the last id assigned to a new player
 io.on('connection', function(socket) {
   server.playerCount++
 
-  socket.on('clientUpdate', (data) => {
-    store.dispatch(updatePlayer(data));
-  })
+    socket.on('clientUpdate', (data) => {
+      store.dispatch(updatePlayer(data));
+    })
 
   socket.on('disconnect', function() {
     server.playerCount--
