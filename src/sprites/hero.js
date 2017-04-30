@@ -5,7 +5,7 @@ import throttle from 'lodash.throttle'
 import emitCurrentState from '../js/emitCurrentState'
 
 export default class extends Phaser.Sprite {
-  constructor ({ socketId, game, x, y, asset }) {
+  constructor({ socketId, game, x, y, asset }) {
     super(game, x, y, asset)
     this.scale.setTo(.5, .5)
     store.dispatch(setHero(socketId, x, y))
@@ -18,17 +18,19 @@ export default class extends Phaser.Sprite {
     this.animate()
 
     this.updatePosition = this.throttlePosUpdate()
+    this.coinPickupCount = 0
+
     emitCurrentState(socket)
   }
 
-  animate () {
+  animate() {
     this.animations.add('stop', [0])
     this.animations.add('run', [1, 2], 8, true) // 8fps looped
     this.animations.add('jump', [3])
     this.animations.add('fall', [4])
   }
 
-  move (direction) {
+  move(direction) {
     const SPEED = 200
     this.body.velocity.x = direction * SPEED
 
@@ -57,9 +59,9 @@ export default class extends Phaser.Sprite {
 
   }
 
-  throttlePosUpdate(){
-    return throttle( () => store.dispatch(setHero(this.socketId, this.x, this.y)),
-    1000/30)
+  throttlePosUpdate() {
+    return throttle(() => store.dispatch(setHero(this.socketId, this.x, this.y)),
+      1000 / 30)
   }
 
   update() {

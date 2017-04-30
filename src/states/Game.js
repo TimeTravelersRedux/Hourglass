@@ -23,7 +23,6 @@ export default class extends Phaser.State {
       }
     }, this)
 
-    this.coinPickupCount = 0
     this.hasKey = false
 
   }
@@ -189,8 +188,10 @@ export default class extends Phaser.State {
   _onHeroVsCoin(hero, coin) {
     this.sfx.coin.play()
     coin.kill()
-    this.coinPickupCount++
+    hero.coinPickupCount++
   }
+
+
 
   _onHeroVsEnemy(hero, enemy) {
     if (hero.body.velocity.y > 0) { // kill enemies when hero is falling
@@ -238,7 +239,7 @@ export default class extends Phaser.State {
     this._handleCollisions()
     this._handleInput()
 
-    this.coinFont.text = `x${this.coinPickupCount}`;
+    this.coinFont.text = `x${this.hero.coinPickupCount}`;
     this.keyIcon.frame = this.hasKey ? 1 : 0
   }
 
