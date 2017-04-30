@@ -34,7 +34,12 @@ socket.on('remove', function(socketId) {
   }
 })
 
-socket.on('gameover', function() {
+socket.on('gameover', function(winnerPickupCount) {
+  // console.log('how many coins I got: ', Hourglass.game.state.states.Game.hero.coinPickupCount)
+  // console.log('how many coins winner got: ', winnerPickupCount)
+
+  Hourglass.winnerPickupCount = winnerPickupCount
+
   Hourglass.game.state.start('GameOver')
 })
 

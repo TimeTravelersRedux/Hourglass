@@ -1,8 +1,10 @@
 import Phaser from 'phaser'
 import { centerGameObjects } from '../utils'
+import GameMenu from './MainMenu.js'
 
 export default class extends Phaser.State {
   init () {}
+
 
   preload () {
     this.loaderBg = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderBg')
@@ -20,6 +22,8 @@ export default class extends Phaser.State {
 
     this.load.image('font:numbers', '/assets/images/numbers.png')
     this.load.image('background', '/assets/images/stars4.jpg')
+    this.load.image('gameOver', '/assets/images/stars-07.jpg')
+
     this.load.image('ground', '/assets/images/ground.png')
     this.load.image('grass:8x1', '/assets/images/grass_8x1.png')
     this.load.image('grass:6x1', '/assets/images/grass_6x1.png')
@@ -29,6 +33,8 @@ export default class extends Phaser.State {
     this.load.image('invisible-wall', '/assets/images/invisible_wall.png')
     this.load.image('icon:coin', '/assets/images/coin_icon.png')
     this.load.image('key', '/assets/images/key.png')
+    this.load.image('logo', '/assets/images/HourglassRedux2.png')
+
 
     this.load.spritesheet('coin', '/assets/images/coin_animated.png', 22, 22)
     this.load.spritesheet('spider', '/assets/images/spider.png', 42, 32)
@@ -43,10 +49,16 @@ export default class extends Phaser.State {
     this.load.audio('sfx:key', 'assets/audio/key.wav')
     this.load.audio('sfx:door', 'assets/audio/door.wav')
 
+    this.state.add("GameMenu", GameMenu)
   }
 
   create () {
-    this.state.start('Game')
+       this.state.start('Game')
 
-  }
+      // setTimeout(function () {
+      //   this.state.start("GameMenu");
+      // }, 1000);
+    }
+
+  update() {}
 }

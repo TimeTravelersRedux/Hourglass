@@ -46,8 +46,8 @@ io.on('connect', function(socket) {
     store.dispatch(updatePlayer(data));
   })
 
-  socket.on('gameover', () => {
-    io.emit('gameover')
+  socket.on('gameover', (winnerPickupCount) => {
+    io.emit('gameover', winnerPickupCount)
   })
 
   socket.on('restart', () => {

@@ -228,7 +228,7 @@ export default class extends Phaser.State {
   }
 
   endGame() {
-    socket.emit('gameover');
+    socket.emit('gameover', this.hero.coinPickupCount);
   }
 
   update() {
