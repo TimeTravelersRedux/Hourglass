@@ -83,10 +83,10 @@ export default class extends Phaser.State {
     console.log(player.position.y - playerData.y)
     player.x = playerData.x
     player.y = playerData.y
-    // this.add.tween(player).to({
-    //   x: playerData.x,
-    //   y: playerData.y,
-    // }, 1, Phaser.Easing.Linear.None, true)
+      // this.add.tween(player).to({
+      //   x: playerData.x,
+      //   y: playerData.y,
+      // }, 1, Phaser.Easing.Linear.None, true)
   }
 
   removePlayer(id) {
@@ -123,20 +123,8 @@ export default class extends Phaser.State {
     this.game.physics.enable(sprite)
     sprite.body.allowGravity = false
     sprite.body.immovable = true
-
-    this._spawnEnemyWall(platform.x, platform.y, 'left')
-    this._spawnEnemyWall(platform.x + sprite.width, platform.y, 'right')
   }
 
-  _spawnEnemyWall(x, y, side) {
-    let sprite = this.enemyWalls.create(x, y, 'invisible-wall')
-      // anchor and y displacement
-    sprite.anchor.set(side === 'left' ? 1 : 0, 1)
-      // physic properties
-    this.game.physics.enable(sprite)
-    sprite.body.immovable = true
-    sprite.body.allowGravity = false
-  }
 
   _spawnCharacters(data) {
     // spawn spiders
@@ -154,7 +142,7 @@ export default class extends Phaser.State {
     this.hero = new Hero({
       socketId: socket.id,
       game: this.game,
-      x: Math.floor(Math.random()*200),
+      x: Math.floor(Math.random() * 200),
       y: 525,
       asset: 'hero'
     })
@@ -227,24 +215,30 @@ export default class extends Phaser.State {
   }
 
   _createHud() {
-    const NUMBERS_STR = '0123456789X '
+    const NUMBERS_STR = '0123456789X ';
     this.coinFont = this.game.add.retroFont('font:numbers', 20, 26,
-      NUMBERS_STR)
+      NUMBERS_STR);
 
-    this.keyIcon = this.game.make.image(0, 19, 'icon:key')
-    this.keyIcon.anchor.set(0, 0.5)
-    let coinIcon = this.game.make.image(this.keyIcon.width + 7, 0, 'icon:coin')
+    this.keyIcon = this.game.make.image(0, 19, 'icon:key');
+    this.keyIcon.anchor.set(0, 0.5);
 
-    this.hud = this.game.add.group()
-    this.hud.add(coinIcon)
-    this.hud.add(this.keyIcon)
-    this.hud.position.set(10, 10)
+    let coinIcon = this.game.make.image(this.keyIcon.width + 7, 0, 'icon:coin');
+    let coinScoreImg = this.game.make.image(coinIcon.x + coinIcon.width,
+      coinIcon.height / 2, this.coinFont);
+    coinScoreImg.anchor.set(0, 0.5);
+
+    this.hud = this.game.add.group();
+    this.hud.add(coinIcon);
+    this.hud.add(coinScoreImg);
+    this.hud.add(this.keyIcon);
+    this.hud.position.set(10, 10);
   }
 
   update() {
     this._handleCollisions()
     this._handleInput()
 
+    this.coinFont.text = `x${this.coinPickupCount}`;
     this.keyIcon.frame = this.hasKey ? 1 : 0
   }
 
