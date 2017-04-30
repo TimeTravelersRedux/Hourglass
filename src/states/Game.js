@@ -19,7 +19,7 @@ export default class extends Phaser.State {
     this.keys.up.onDown.add(function() {
       let didJump = this.hero.jump()
       if (didJump) {
-        this.sfx.jump.play()
+        this.sfx.jump.play('', 0, .01)
       }
     }, this)
 
@@ -40,7 +40,7 @@ export default class extends Phaser.State {
       background: this.game.add.audio('sfx:background')
     }
 
-    this.sfx.background.play()
+    this.sfx.background.loopFull(1)
 
 
     // create level
@@ -199,7 +199,7 @@ export default class extends Phaser.State {
 
 
   _onHeroVsCoin(hero, coin) {
-    this.sfx.coin.play()
+    this.sfx.coin.play('', 0, .01)
     coin.kill()
     this.coinPickupCount++
   }
@@ -208,21 +208,21 @@ export default class extends Phaser.State {
     if (hero.body.velocity.y > 0) { // kill enemies when hero is falling
       hero.bounce()
       enemy.die()
-      this.sfx.stomp.play()
+      this.sfx.stomp.play('', 0, .01)
     } else { // game over -> restart the game
-      this.sfx.stomp.play()
+      this.sfx.stomp.play('', 0, .01)
       this.game.state.restart()
     }
   }
 
   _onHeroVsKey(hero, key) {
-    this.sfx.key.play()
+    this.sfx.key.play('', 0, .01)
     key.kill()
     this.hasKey = true
   }
 
   _onHeroVsDoor(hero, door) {
-    this.sfx.door.play()
+    this.sfx.door.play('', 0, .01)
     this.state.start('GameOver')
   }
 
