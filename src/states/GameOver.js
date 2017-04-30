@@ -23,7 +23,7 @@ export default class extends Phaser.State {
 
   update() {
     if (this.game.input.activePointer.isDown) {
-      this.state.start('Game');
+      socket.emit('restart')
     }
   }
 

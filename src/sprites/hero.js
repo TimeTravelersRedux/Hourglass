@@ -19,7 +19,7 @@ export default class extends Phaser.Sprite {
 
     this.updatePosition = this.throttlePosUpdate()
     this.coinPickupCount = 0
-
+    this.hasKey = false
     emitCurrentState(socket)
   }
 

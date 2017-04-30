@@ -23,7 +23,6 @@ export default class extends Phaser.State {
       }
     }, this)
 
-    this.hasKey = false
 
   }
   preload() {}
@@ -77,15 +76,8 @@ export default class extends Phaser.State {
 
   moveOtherPlayer(playerData) {
     let player = this.playerMap[playerData.id]
-    console.log("playerData", playerData);
-    console.log(player.position)
-    console.log(player.position.y - playerData.y)
     player.x = playerData.x
     player.y = playerData.y
-      // this.add.tween(player).to({
-      //   x: playerData.x,
-      //   y: playerData.y,
-      // }, 1, Phaser.Easing.Linear.None, true)
   }
 
   removePlayer(id) {
@@ -170,15 +162,15 @@ export default class extends Phaser.State {
   }
 
   _spawnKey(x, y) {
-    this.key = this.bgDecoration.create(x, y, 'key')
-    this.key.anchor.set(0.5, 0.5)
+    this.gameKey = this.bgDecoration.create(x, y, 'key')
+    this.gameKey.anchor.set(0.5, 0.5)
       // enable physics to detect collisions, so the hero can pick the key up
-    this.game.physics.enable(this.key)
-    this.key.body.allowGravity = false
+    this.game.physics.enable(this.gameKey)
+    this.gameKey.body.allowGravity = false
       // add a small 'up & down' animation via a tween
-    this.key.y -= 3
-    this.game.add.tween(this.key)
-      .to({ y: this.key.y + 6 }, 800, Phaser.Easing.Sinusoidal.InOut)
+    this.gameKey.y -= 3
+    this.game.add.tween(this.gameKey)
+      .to({ y: this.gameKey.y + 6 }, 800, Phaser.Easing.Sinusoidal.InOut)
       .yoyo(true)
       .loop()
       .start()
@@ -207,12 +199,12 @@ export default class extends Phaser.State {
   _onHeroVsKey(hero, key) {
     this.sfx.key.play('', 0, .01)
     key.kill()
-    this.hasKey = true
+    hero.hasKey = true
   }
 
   _onHeroVsDoor(hero, door) {
     this.sfx.door.play('', 0, .01)
-    this.state.start('GameOver')
+    this.endGame()
   }
 
   _createHud() {
@@ -220,10 +212,10 @@ export default class extends Phaser.State {
     this.coinFont = this.game.add.retroFont('font:numbers', 20, 26,
       NUMBERS_STR);
 
-    this.keyIcon = this.game.make.image(0, 19, 'icon:key');
-    this.keyIcon.anchor.set(0, 0.5);
+    this.gameKeyIcon = this.game.make.image(0, 19, 'icon:key');
+    this.gameKeyIcon.anchor.set(0, 0.5);
 
-    let coinIcon = this.game.make.image(this.keyIcon.width + 7, 0, 'icon:coin');
+    let coinIcon = this.game.make.image(this.gameKeyIcon.width + 7, 0, 'icon:coin');
     let coinScoreImg = this.game.make.image(coinIcon.x + coinIcon.width,
       coinIcon.height / 2, this.coinFont);
     coinScoreImg.anchor.set(0, 0.5);
@@ -231,8 +223,12 @@ export default class extends Phaser.State {
     this.hud = this.game.add.group();
     this.hud.add(coinIcon);
     this.hud.add(coinScoreImg);
-    this.hud.add(this.keyIcon);
+    this.hud.add(this.gameKeyIcon);
     this.hud.position.set(10, 10);
+  }
+
+  endGame() {
+    socket.emit('gameover');
   }
 
   update() {
@@ -240,7 +236,7 @@ export default class extends Phaser.State {
     this._handleInput()
 
     this.coinFont.text = `x${this.hero.coinPickupCount}`;
-    this.keyIcon.frame = this.hasKey ? 1 : 0
+    this.gameKeyIcon.frame = this.hero.hasKey ? 1 : 0
   }
 
   _handleCollisions() {
@@ -251,12 +247,12 @@ export default class extends Phaser.State {
       null, this)
     this.game.physics.arcade.overlap(this.hero, this.spiders,
       this._onHeroVsEnemy, null, this)
-    this.game.physics.arcade.overlap(this.hero, this.key, this._onHeroVsKey,
+    this.game.physics.arcade.overlap(this.hero, this.gameKey, this._onHeroVsKey,
       null, this)
     this.game.physics.arcade.overlap(this.hero, this.door, this._onHeroVsDoor,
       // ignore if there is no key or the player is on air
       function(hero, door) {
-        return this.hasKey && hero.body.touching.down
+        return hero.hasKey && hero.body.touching.down
       }, this)
 
     const players = Object.keys(this.playerMap)
@@ -266,7 +262,7 @@ export default class extends Phaser.State {
         this.game.physics.arcade.collide(player, this.platforms)
         this.game.physics.arcade.collide(this.hero, player)
         this.game.physics.arcade.overlap(player, this.coins, this._onHeroVsCoin, null, this)
-        this.game.physics.arcade.overlap(player, this.key, this._onHeroVsKey, null, this)
+        this.game.physics.arcade.overlap(player, this.gameKey, this._onHeroVsKey, null, this)
 
       })
     }
