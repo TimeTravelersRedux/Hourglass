@@ -3,6 +3,7 @@ import Phaser from 'phaser'
 import Hero from '../sprites/hero'
 import Spider from '../sprites/spider'
 import Player from '../sprites/player'
+import throttle from 'lodash.throttle'
 
 export default class extends Phaser.State {
   init() {
@@ -24,7 +25,6 @@ export default class extends Phaser.State {
 
     this.coinPickupCount = 0
     this.hasKey = false
-
   }
   preload() {}
 
@@ -74,10 +74,13 @@ export default class extends Phaser.State {
 
   moveOtherPlayer(playerData) {
     let player = this.playerMap[playerData.id]
-    this.add.tween(player).to({
-      x: playerData.x,
-      y: playerData.y
-    }, 10, Phaser.Easing.Linear.None, true)
+    console.log("playerData", playerData);
+    player.x = playerData.x
+    player.y = playerData.y
+    // this.add.tween(player).to({
+    //   x: playerData.x,
+    //   y: playerData.y,
+    // }, 1, Phaser.Easing.Linear.None, true)
   }
 
   removePlayer(id) {

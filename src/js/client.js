@@ -13,8 +13,8 @@ socket.on('serverUpdate', function(data) {
   const newPlayers = data.players;
   if (newPlayers.length) {
     newPlayers.forEach(player => {
-      Hourglass.game.state.getCurrentState().addNewPlayer(player)
       if(player.id !== socket.id){
+        Hourglass.game.state.getCurrentState().addNewPlayer(player)
         Hourglass.game.state.getCurrentState().moveOtherPlayer(player)
       }
     })
