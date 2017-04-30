@@ -65,7 +65,7 @@ export default class extends Phaser.State {
         game: this.game,
         x: playerData.x,
         y: playerData.y,
-        asset: 'hero'
+        asset: 'player'
       })
 
       this.playerMap[playerData.id] = this.game.add.existing(newPlayer)

@@ -7,13 +7,12 @@ import emitCurrentState from '../js/emitCurrentState'
 export default class extends Phaser.Sprite {
   constructor ({ socketId, game, x, y, asset }) {
     super(game, x, y, asset)
-    console.log(y);
+    this.scale.setTo(.5, .5)
     store.dispatch(setHero(socketId, x, y))
 
     this.socketId = socketId
     this.anchor.setTo(0.5)
     this.game.physics.enable(this)
-    console.log(this.body);
     this.body.collideWorldBounds = true
 
     this.animate()
@@ -34,9 +33,9 @@ export default class extends Phaser.Sprite {
     this.body.velocity.x = direction * SPEED
 
     if (this.body.velocity.x < 0) {
-      this.scale.x = -1
+      this.scale.x = -.5
     } else if (this.body.velocity.x > 0) {
-      this.scale.x = 1
+      this.scale.x = .5
     }
   }
 

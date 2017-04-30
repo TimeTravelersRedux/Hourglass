@@ -5,7 +5,7 @@ export default class extends Phaser.Sprite {
     super(game, x, y, asset)
     this.socketId = socketId
     this.anchor.setTo(0.5)
-
+    this.scale.setTo(.5, .5)
     this.game.physics.enable(this)
     this.body.collideWorldBounds = true
 

@@ -13,7 +13,9 @@ export default class extends Phaser.State {
     //
     // load your assets
     //
-    this.load.spritesheet('hero', 'assets/images/hero.png', 36, 42, 8)
+    this.load.spritesheet('hero', '/assets/platformerGraphicsDeluxe_Updated/Player/p1_walk/p1_walk.png', 67, 92, 8)
+    this.load.spritesheet('player', '/assets/platformerGraphicsDeluxe_Updated/Player/p3_walk/p3_walk.png', 67, 92, 8)
+
     this.load.json('level:1', '/assets/data/level01.json')
 
     this.load.image('font:numbers', '/assets/images/numbers.png')
@@ -30,7 +32,7 @@ export default class extends Phaser.State {
 
     this.load.spritesheet('coin', '/assets/images/coin_animated.png', 22, 22)
     this.load.spritesheet('spider', '/assets/images/spider.png', 42, 32)
-    this.load.spritesheet('hero', '/assets/images/hero.png', 36, 42)
+    // this.load.spritesheet('hero', '/assets/images/platformerGraphicsDeluxe_Updated/Player/p1_walk/p1_walk.png', 73, 97)
     this.load.spritesheet('door', '/assets/images/door.png', 42, 66)
     this.load.spritesheet('icon:key', '/assets/images/key_icon.png', 34, 30)
 
