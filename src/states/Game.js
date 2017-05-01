@@ -299,7 +299,9 @@ export default class extends Phaser.State {
   }
 
   _handleKey(){
-    if(!this.gameKey.alive){
+        console.log("store.getState().keyHolderId", store.getState().keyHolderId);
+        console.log("this.hero.socketId", this.hero.socketId);
+    if(!this.gameKey.alive && store.getState().keyHolderId !== this.hero.socketId){
       this._spawnKey(903, 105)
       this.hero.hasKey = false
     }
