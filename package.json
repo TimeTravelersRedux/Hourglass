@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/TimeTravelersRedux/Hourglass#readme",
   "dependencies": {
+    "debug": "^2.6.6",
     "express": "^4.15.2",
     "lodash": "^4.17.4",
     "lodash.throttle": "^4.1.1",
