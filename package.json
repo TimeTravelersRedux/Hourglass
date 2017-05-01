@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "webpack -w & nodemon --watch server -e js,html server/app.js",
-    "deploy": "webpack",
+    "deploy": "webpack --config webpack.production.config",
     "test": "eslint ./src/**/**.js"
   },
   "repository": {
