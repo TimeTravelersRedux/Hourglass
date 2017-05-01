@@ -6,6 +6,7 @@
   "scripts": {
     "start": "webpack -w & nodemon --watch server -e js,html server/app.js",
     "deploy": "webpack --config webpack.production.config.js",
+    "deploy-heroku": "bin/deploy-heroku.sh",
     "test": "eslint ./src/**/**.js"
   },
   "repository": {
