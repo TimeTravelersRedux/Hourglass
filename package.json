@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
+  "engines": {
+    "node": ">= 7.0.0"
+  },
   "scripts": {
     "start": "webpack -w & nodemon --watch server -e js,html server/app.js",
     "deploy": "webpack --config webpack.production.config.js",
